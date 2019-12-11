@@ -109,7 +109,11 @@ export class MapComponent implements AfterViewInit {
     var lyrMarkerCluster;
     var subgroup;
 
-    lyrOSM = L.tileLayer.provider('OpenStreetMap.Mapnik');
+    lyrOSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+
     lyrWatercolor = L.tileLayer.provider('Stamen.Watercolor');
     lyrTopo = L.tileLayer.provider('OpenTopoMap');
     lyrImagery = L.tileLayer.provider('Esri.WorldImagery');
