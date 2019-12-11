@@ -58,8 +58,6 @@ export class MapComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initMap();
-    // this.mapService.addBikeMarkers(this.map);
-    // this.mapService.addLuasMarkers(this.map);
   }
 
   private latLngToArrayString(ll) {
@@ -163,18 +161,6 @@ export class MapComponent implements AfterViewInit {
     popPhoenixPark.setLatLng([53.349424, -6.29714]);
     popPhoenixPark.setContent("<h2>Phoenix Park</h2><img src='assets/images/phoenix.jpg' width='200px'>");
 
-    // setInterval(() => {
-    //   this.map.locate();
-    // }, 5000);
-
-    // this.map.on('click', (e) =>  {
-    //     if(e.originalEvent.shiftKey) {
-    //       alert(this.map.getZoom());
-    //     } else {
-    //       alert(e.latlng.toString());
-    //       console.log(L);
-    //     }
-    // // });
     var destLat;
     var destLng;
     var srcLat;
@@ -188,28 +174,6 @@ export class MapComponent implements AfterViewInit {
         this.map.locate();
       }
     } );
-    //
-    // this.map.on('keypress', (e) => {
-    //   if(e.originalEvent.key=="l") {
-    //     this.map.locate();
-    //   }
-    // });
-    // mrkMuseum.on('dragend', (e) =>
-    //   mrkMuseum.setTooltipContent("Current Location: "+mrkMuseum.getLatLng().toString()+
-    //   "<br>"+"Distance to Museum:"+ mrkMuseum.getLatLng().distanceTo([53.3420246,-6.2564647]).toFixed(0))
-    // );
-
-
-    // this.map.on('mousemove', (e) => {
-    //   document.getElementById('zoom').innerHTML = this.latLngToArrayString(e.latlng);
-    // });
-
-
-
-    // subgroup.on('click', (e) => {
-    //   console.log(e);
-    //
-    // });
 
     var route = null;
     this.map.on('locationfound', (e) => {
@@ -219,7 +183,7 @@ export class MapComponent implements AfterViewInit {
       if(route != null){
         route.remove();
       }
-      markerCurrentLocation = L.circle(e.latlng, {radius:5}).addTo(this.map);
+      markerCurrentLocation = L.circle(e.latlng, {radius:10}).addTo(this.map);
       this.map.setView(e.latlng, 14);
         route =  L.Routing.control({
             waypoints: [
@@ -248,30 +212,30 @@ export class MapComponent implements AfterViewInit {
   document.getElementById("addBars").addEventListener('click', () => {
     if(subgroup.hasLayer(lyrBars)){
       subgroup.removeLayer(lyrBars);
-      document.getElementById("addBars").innerHTML = "Add Bars";
+      document.getElementById("addBars").innerHTML = "+Bar";
     } else {
       subgroup.addLayer(lyrBars);
-      document.getElementById("addBars").innerHTML = "Remove Bars";
+      document.getElementById("addBars").innerHTML = "-Bar";
     }
   });
 
     document.getElementById("addRestaurants").addEventListener('click', () => {
       if(subgroup.hasLayer(lyrRestraurants)){
         subgroup.removeLayer(lyrRestraurants);
-        document.getElementById("addRestaurants").innerHTML = "Add Restaurants";
+        document.getElementById("addRestaurants").innerHTML = "+Rest";
       } else {
         subgroup.addLayer(lyrRestraurants);
-        document.getElementById("addRestaurants").innerHTML = "Remove Restaurants";
+        document.getElementById("addRestaurants").innerHTML = "-Rest";
       }
     });
 
     document.getElementById("addCafes").addEventListener('click', () => {
       if(subgroup.hasLayer(lyrCafes)){
         subgroup.removeLayer(lyrCafes);
-        document.getElementById("addCafes").innerHTML = "Add Cafes";
+        document.getElementById("addCafes").innerHTML = "+Cafe";
       } else {
         subgroup.addLayer(lyrCafes);
-        document.getElementById("addCafes").innerHTML = "Remove Cafes";
+        document.getElementById("addCafes").innerHTML = "-Cafe";
       }
     });
 
