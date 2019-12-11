@@ -1,0 +1,35 @@
+<ion-app>
+  <ion-menu side="start" menuId="m1" contentId="my-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>
+         Irish Transit
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <!--        ion-menu-toggle allow the toggle to close when item clicked-->
+        <ion-menu-toggle >
+          <ion-item lines="none" routerLink="/map/tabs/discover">
+            <ion-icon name="business" slot="start"></ion-icon>
+            <ion-label>Discover Places</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle >
+          <ion-item lines="none" routerLink="/map/tabs/discover">
+            <ion-icon name="checkbox-outline" slot="start"></ion-icon>
+            <ion-label>Your Favourite</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle >
+          <ion-item lines="none" >
+            <ion-icon name="checkbox-outline" slot="start"></ion-icon>
+            <ion-label id="zoom">Zoom Level: </ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="my-content"></ion-router-outlet>
+</ion-app>

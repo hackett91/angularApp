@@ -1,0 +1,7 @@
+{
+  "name": "irishTransit",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,35 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+/* Core CSS required for Ionic components to work properly */
+@import url(~@ionic/angular/css/core.css);
+/* Basic CSS for apps built with Ionic */
+@import url(~@ionic/angular/css/normalize.css);
+@import url(~@ionic/angular/css/structure.css);
+@import url(~@ionic/angular/css/typography.css);
+@import url(~@ionic/angular/css/display.css);
+/* Optional CSS utils that can be commented out */
+@import url(~@ionic/angular/css/padding.css);
+@import url(~@ionic/angular/css/float-elements.css);
+@import url(~@ionic/angular/css/text-alignment.css);
+@import url(~@ionic/angular/css/text-transformation.css);
+@import url(~@ionic/angular/css/flex-utils.css);
+@import url(~leaflet/dist/leaflet.css);
+@import url(~leaflet-geosearch/assets/css/leaflet.css);
+@import url(~leaflet-draw/dist/leaflet.draw.css);
+@import url(~leaflet-draw/dist/leaflet.draw-src.css);
+@import url(~leaflet-styleeditor/dist/css/Leaflet.StyleEditor.min.css);
+@import url(~beautifymarker/leaflet-beautify-marker-icon.css);
+@import url(~leaflet-routing-machine/leaflet-routing-machine.css);
+@import url(~leaflet.markercluster/dist/MarkerCluster.Default.css);
+@import url(~leaflet.markercluster/dist/MarkerCluster.css);
+
+
+/*# sourceMappingURL=global.css.map */
