@@ -194,7 +194,7 @@ export class MapComponent implements AfterViewInit {
               L.latLng(e.latlng.lat, e.latlng.lng),
               L.latLng(destLat, destLng)
             ], collapsible: true,
-          })
+          });
           route.addTo(this.map);
   });
 
