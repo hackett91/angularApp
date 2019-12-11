@@ -120,9 +120,9 @@ export class MapComponent implements AfterViewInit {
     this.map.addLayer(lyrOSM);
 
     fgpDrawItems = L.featureGroup([]).addTo(this.map);
-    lyrCafes = L.geoJSON.ajax('https://info-sys-app-backend.herokuapp.com/cafes',{pointToLayer:this.returnCafe});
-    lyrBars = L.geoJSON.ajax('https://info-sys-app-backend.herokuapp.com/bars',{pointToLayer:this.returnBar});
-    lyrRestraurants = L.geoJSON.ajax('https://info-sys-app-backend.herokuapp.com/restraurants',{pointToLayer:this.returnRestraurant});
+    lyrCafes = L.geoJSON.ajax('https://www.irish-transit.com/cafes',{pointToLayer:this.returnCafe});
+    lyrBars = L.geoJSON.ajax('https://www.irish-transit.com/bars',{pointToLayer:this.returnBar});
+    lyrRestraurants = L.geoJSON.ajax('https://www.irish-transit.com/restraurants',{pointToLayer:this.returnRestraurant});
 
 
     lyrMarkerCluster =  L.markerClusterGroup();
