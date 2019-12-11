@@ -225,7 +225,7 @@ export class MapComponent implements AfterViewInit {
             waypoints: [
               L.latLng(e.latlng.lat, e.latlng.lng),
               L.latLng(destLat, destLng)
-            ], closeButton: true, input: true, geocoder: true
+            ], closeButton: true
           })
           route.addTo(this.map);
   });
