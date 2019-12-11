@@ -193,7 +193,7 @@ export class MapComponent implements AfterViewInit {
             waypoints: [
               L.latLng(e.latlng.lat, e.latlng.lng),
               L.latLng(destLat, destLng)
-            ], closeButton: true
+            ], collapsible: true,
           })
           route.addTo(this.map);
   });
