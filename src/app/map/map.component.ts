@@ -11,6 +11,7 @@ import 'beautifymarker';
 import 'leaflet-routing-machine';
 import 'leaflet.markercluster';
 import 'leaflet.featuregroup.subgroup';
+import 'leaflet-geometryutil';
 // inspiration taking from https://alligator.io/angular/angular-and-leaflet-marker-service/
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -60,10 +61,6 @@ export class MapComponent implements AfterViewInit {
     this.initMap();
   }
 
-  private latLngToArrayString(ll) {
-    return "["+ll.lat.toFixed(5)+", "+ ll.lng.toFixed(5)+"]";
-
-  }
   private returnCafe(json, latlng) {
     var att = json.properties;
     return L.circleMarker(latlng, {radius:10, color:'green'}).bindPopup("<h4>Cafe: "+att.name+"</h4>");
@@ -79,9 +76,17 @@ export class MapComponent implements AfterViewInit {
       return L.circleMarker(latlng, {radius:10, color:'yellow'}).bindPopup("<h4>Restraurants: "+att.name+"<br> Cuisine"+att.cuisine+"</h4>");
   }
 
-    private openEvent(event){
-      console.log(event);
-    }
+  private returnClosestlayer(lyrGroup, llRef) {
+              var arLyrs = lyrGroup.getLayers();
+              var nearest = L.GeometryUtil.closestLayer(this.map, arLyrs, llRef);
+              nearest.distance = llRef.distanceTo(nearest.latlng);
+              nearest.bearing = L.GeometryUtil.bearing(llRef, nearest.latlng);
+              if (nearest.bearing<0){
+                  nearest.bearing = nearest.bearing+360;
+              }
+              nearest.att = nearest.layer.feature.properties;
+              return nearest;
+  }
 
   private initMap(): void {
     this.map = L.map('map', {
@@ -108,6 +113,11 @@ export class MapComponent implements AfterViewInit {
     var lyrRestraurants;
     var lyrMarkerCluster;
     var subgroup;
+    var destLat;
+    var destLng;
+    var srcLat;
+    var srcLng;
+    var routingControl = null;
 
     lyrOSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -147,7 +157,8 @@ export class MapComponent implements AfterViewInit {
     ctrlLayers = L.control.layers(objBasemaps, objOverLays).addTo(this.map);
     ctrlDraw = new L.Control.Draw({
       draw: {
-        circle:false
+        circle:false,
+        marker: false,
       },
       edit: {
         featureGroup: fgpDrawItems
@@ -155,8 +166,21 @@ export class MapComponent implements AfterViewInit {
     });
     ctrlDraw.addTo(this.map);
     this.map.on('draw:created', (event) => {
-      console.log(event);
-      fgpDrawItems.addLayer(event.layer);
+      if(event.layerType === "circlemarker") {
+         var llRef = event.layer.getLatLng();
+         var strTable = "<table>";
+         strTable += "<tr><th>Constraint</th><th>Name</th><th>Distance</th></tr>";
+         var bar = this.returnClosestlayer(lyrBars, llRef);
+          strTable += "<tr><td>Bar</td><td>"+bar.att.name+"</td><td>"+bar.distance.toFixed(0)+" m</td><td></tr>";
+         var cafe = this.returnClosestlayer(lyrCafes, llRef);
+         strTable += "<tr><td>Cafe</td><td>"+cafe.att.name+"</td><td>"+cafe.distance.toFixed(0)+" m</td><td></tr>";
+         var restraurant = this.returnClosestlayer(lyrRestraurants, llRef);
+         strTable += "<tr><td>Eat</td><td>"+restraurant.att.name+"</td><td>"+restraurant.distance.toFixed(0)+" m</td><td></tr>";
+         strTable += "</table>";
+          fgpDrawItems.addLayer(event.layer.bindPopup(strTable, {maxWidth:400}));
+      } else{
+              fgpDrawItems.addLayer(event.layer);
+      }
     });
 
     ctrlStyle = L.control.styleEditor({position:'topright'}).addTo(this.map);
@@ -165,37 +189,35 @@ export class MapComponent implements AfterViewInit {
     popPhoenixPark.setLatLng([53.349424, -6.29714]);
     popPhoenixPark.setContent("<h2>Phoenix Park</h2><img src='assets/images/phoenix.jpg' width='200px'>");
 
-    var destLat;
-    var destLng;
-    var srcLat;
-    var srcLng;
+
 
     this.map.on('dblclick', (e) => {
       destLat = e.latlng.lat;
       destLng = e.latlng.lng;
       L.marker(e.latlng).addTo(this.map);
       if(confirm("Do you want to travel here?")){
-        this.map.locate({watch:true});
+        this.map.locate();
       }
     } );
 
-    var route = null;
+
     this.map.on('locationfound', (e) => {
       if(markerCurrentLocation != null) {
         markerCurrentLocation.remove();
       }
-      if(route != null){
-        route.remove();
+      if(routingControl != null){
+        this.map.removeControl(routingControl);
+        routingControl = null;
       }
       markerCurrentLocation = L.circle(e.latlng, {radius:10}).addTo(this.map);
       this.map.setView(e.latlng, 14);
-        route =  L.Routing.control({
+      routingControl =  L.Routing.control({
             waypoints: [
               L.latLng(e.latlng.lat, e.latlng.lng),
               L.latLng(destLat, destLng)
             ], collapsible: true,
-          });
-          route.addTo(this.map);
+      });
+      routingControl.addTo(this.map);
   });
 
     this.map.on('locationerror', (e) => {
@@ -204,7 +226,7 @@ export class MapComponent implements AfterViewInit {
   });
 
   document.getElementById("getLocation").addEventListener('click', () => {
-    this.map.locate({watch:true});
+    this.map.locate();
   });
 
   document.getElementById("openPopUpPhoenix").addEventListener('click', () => {
@@ -226,10 +248,10 @@ export class MapComponent implements AfterViewInit {
     document.getElementById("addRestaurants").addEventListener('click', () => {
       if(subgroup.hasLayer(lyrRestraurants)){
         subgroup.removeLayer(lyrRestraurants);
-        document.getElementById("addRestaurants").innerHTML = "+Rest";
+        document.getElementById("addRestaurants").innerHTML = "+Eat";
       } else {
         subgroup.addLayer(lyrRestraurants);
-        document.getElementById("addRestaurants").innerHTML = "-Rest";
+        document.getElementById("addRestaurants").innerHTML = "-Eat";
       }
     });
 
@@ -240,6 +262,13 @@ export class MapComponent implements AfterViewInit {
       } else {
         subgroup.addLayer(lyrCafes);
         document.getElementById("addCafes").innerHTML = "-Cafe";
+      }
+    });
+
+    document.getElementById("removeRoute").addEventListener('click', () => {
+      if(routingControl != null){
+        this.map.removeControl(routingControl);
+        routingControl = null;
       }
     });
 

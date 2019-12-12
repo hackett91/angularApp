@@ -132,6 +132,9 @@
               },
               {
                 "input": "./node_modules/leaflet.featuregroup.subgroup/dist/leaflet.featuregroup.subgroup.js"
+              },
+              {
+                "input": "./node_modules/leaflet-geometryutil/src/leaflet.geometryutil.js"
               }
             ]
           },
