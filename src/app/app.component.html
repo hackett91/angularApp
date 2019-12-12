@@ -31,7 +31,8 @@
       </ion-list>
     </ion-content>
   </ion-menu>
-
   <ion-router-outlet id="my-content"></ion-router-outlet>
-  <span *ngIf="update">There is an update for your app </span>
+  <button *ngIf="Pwa.promptEvent" (click)="installPwa()">
+  Install
+</button>
 </ion-app>
