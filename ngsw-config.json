@@ -24,5 +24,37 @@
         ]
       }
     }
+  ],
+  "dataGroups": [
+    {
+      "name": "barsApi",
+      "urls": ["https://www.irish-transit.com/bars"],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 20,
+        "maxAge": "1h",
+        "timeout": "10s"
+      }
+    },
+    {
+      "name": "cafesApi",
+      "urls": ["https://www.irish-transit.com/cafes"],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 20,
+        "maxAge": "1h",
+        "timeout": "10s"
+      }
+    },
+    {
+      "name": "restraurantsApi",
+      "urls": ["https://www.irish-transit.com/restraurants"],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 20,
+        "maxAge": "1h",
+        "timeout": "10s"
+      }
+    }
   ]
 }
