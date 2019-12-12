@@ -175,7 +175,7 @@ export class MapComponent implements AfterViewInit {
       destLng = e.latlng.lng;
       L.marker(e.latlng).addTo(this.map);
       if(confirm("Do you want to travel here?")){
-        this.map.locate();
+        this.map.locate({watch:true});
       }
     } );
 
@@ -204,7 +204,7 @@ export class MapComponent implements AfterViewInit {
   });
 
   document.getElementById("getLocation").addEventListener('click', () => {
-    this.map.locate();
+    this.map.locate({watch:true});
   });
 
   document.getElementById("openPopUpPhoenix").addEventListener('click', () => {
